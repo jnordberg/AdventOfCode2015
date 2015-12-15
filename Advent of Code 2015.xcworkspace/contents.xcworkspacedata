@@ -19,4 +19,7 @@
    <FileRef
       location = "group:Day 5.playground">
    </FileRef>
+   <FileRef
+      location = "group:Day 6.playground">
+   </FileRef>
 </Workspace>
