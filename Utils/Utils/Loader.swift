@@ -9,7 +9,7 @@
 import Foundation
 
 public enum LoadingError: ErrorType {
-    case FileNotFound
+    case FileNotFound, UnknownError
 }
 
 public func loadResourceAsString(path: String, ofType type: String = "") throws -> String {
@@ -25,6 +25,18 @@ public func loadResourceAsNewlineSeparatedArray(path: String, ofType type: Strin
     if let filePath = NSBundle.mainBundle().pathForResource(path, ofType: type) {
         let string = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding) as String
         return string.characters.split{$0 == "\n"}.map(String.init)
+    } else {
+        throw LoadingError.FileNotFound
+    }
+}
+
+public func loadResourceAsData(path: String, ofType type: String = "") throws -> NSData {
+    if let filePath = NSBundle.mainBundle().pathForResource(path, ofType: type) {
+        if let data = NSData(contentsOfFile: filePath) {
+            return data
+        } else {
+            throw LoadingError.UnknownError
+        }
     } else {
         throw LoadingError.FileNotFound
     }
